@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="az">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Nihadın Əsgərliyi - Geri Sayım</title>
+  <style>
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220;
+      --accent:#7dd3fc;
+      --muted:#9ca3af
+    }
+    html,body{
+      height:100%;
+      margin:0;
+      font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
+      background:linear-gradient(180deg,#061022 0%,#081426 60%);
+      color:#e6eef8;
+      text-align:center;
+      padding:20px;
+    }
+    .wrap{max-width:820px;margin:32px auto;}
+    h1{margin:0 0 20px;font-size:22px}
+    .card{background:rgba(255,255,255,0.03);border-radius:12px;padding:20px;box-shadow:0 6px 24px rgba(2,6,23,0.6)}
+    .count{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:18px 0}
+    .unit{min-width:96px;text-align:center}
+    .n{font-weight:700;font-size:36px}
+    .label{color:var(--muted);font-size:13px}
+    footer{margin-top:14px;color:var(--muted);font-size:13px;text-align:center}
+    video{
+      display:none;       /* Başlanğıcda gizli */
+      margin:20px auto;   /* Mərkəzləşdirir */
+      max-width:90%;
+      border-radius:12px;
+      display:block;
+    }
+    @media(max-width:520px){.n{font-size:28px}.unit{min-width:68px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Nihadın əsgərliyinin bitməsinə qalan vaxt</h1>
+    <div class="card">
+      <div class="count" id="count">
+        <div class="unit"><div class="n" id="days">--</div><div class="label">Gün</div></div>
+        <div class="unit"><div class="n" id="hours">--</div><div class="label">Saat</div></div>
+        <div class="unit"><div class="n" id="minutes">--</div><div class="label">Dəqiqə</div></div>
+        <div class="unit"><div class="n" id="seconds">--</div><div class="label">Saniyə</div></div>
+      </div>
+    </div>
+    <footer>
+      <div id="status" class="muted"></div>
+    </footer>
+
+    <!-- Video -->
+    <video id="endVideo" autoplay>
+      <source src="klopp sevinc.mp4" type="video/mp4">
+      Brauzer video dəstəkləmir.
+    </video>
+
+  </div>
+
+  <script>
+    const daysEl = document.getElementById('days');
+    const hoursEl = document.getElementById('hours');
+    const minutesEl = document.getElementById('minutes');
+    const secondsEl = document.getElementById('seconds');
+    const status = document.getElementById('status');
+    const video = document.getElementById('endVideo');
+
+    // Əsgərlik müddəti
+    // Əsgərlik müddəti (test üçün 5 saniyə sonra)
+const startDate = new Date();
+const target = new Date(startDate.getTime() + 5000); // indi + 5 saniyə
+
+
+    function update(){
+      const now = new Date();
+      const diff = target - now;
+
+      if(diff <= 0){
+        daysEl.textContent = '0';
+        hoursEl.textContent = '0';
+        minutesEl.textContent = '0';
+        secondsEl.textContent = '0';
+        status.textContent = 'Təbriklər — Nihadın əsgərliyi bitdi!';
+
+        // Video göstər və oynat
+        video.style.display = 'block';
+        video.play();
+
+        return;
+      }
+
+      const d = Math.floor(diff / (1000*60*60*24));
+      const h = Math.floor((diff / (1000*60*60)) % 24);
+      const m = Math.floor((diff / (1000*60)) % 60);
+      const s = Math.floor((diff / 1000) % 60);
+
+      daysEl.textContent = d;
+      hoursEl.textContent = h;
+      minutesEl.textContent = m;
+      secondsEl.textContent = s;
+
+      status.textContent = `Başlanğıc: ${startDate.toLocaleDateString('az-AZ')} — Bitiş: ${target.toLocaleDateString('az-AZ')}`;
+    }
+
+    update();
+    setInterval(update,1000);
+  </script>
+</body>
+</html>
+
